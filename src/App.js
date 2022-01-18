@@ -7,45 +7,56 @@ import QRCode from "qrcode.react";
 function App() {
   const qrRef = React.useRef()
 
-  const [text, setText] = useState("https://google.com")
+  const [text, setText] = useState("")
   const [fgColor, setFgColor] = useState("black")
   const [bgColor, setBgColor] = useState("white")
 
   const handleDownload = (e) => {
     e.preventDefault()
-    // DOWNLOAD 
-    let canvas = qrRef.current.querySelector("canvas")
-    console.log("canvas", canvas)
 
-    setText("")
+    // DOWNLOAD 
+    let canvas = qrRef.current.querySelector("canvas") //grabbing image
+    //console.log("canvas", canvas)
+    let image = canvas.toDataURL("image/png"); // converting image to png
+    let anchor = document.createElement("a") // creating an a tag 
+    anchor.href = image // setting the link and passing the image
+    anchor.download = "qr_code.png" // downmload anchor tag & naming it "qr_code.png" , could be a dynamic name
+    document.body.appendChild(anchor)
+    anchor.click();
+    document.body.removeChild(anchor)
+
+
   }
 
   const qrCode = (
     <QRCode
       id="qrCodeId"
-      size={500}
+      size={400}
       value={text}
       fgColor={fgColor}
       bgColor={bgColor}
       level="L"
+
     />
   )
 
   return (
     <div className="container mt-5">
-      <div className="row">
+      <div className="row d-flex justify-content-around">
 
-        <div className="col-5">
+        <div className="col-10 col-md-5 mb-4">
           <form onSubmit={handleDownload}>
             <label htmlFor="exampleInputEmail1" className="form-label">Enter text to convert to qr-code</label>
             <input
               type="text"
-              className="form-control"
+              className="form-control" esw
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               placeholder="www.hello.io"
               onChange={(e) => { setText(e.target.value) }}
+              required
             />
+
             <label htmlFor="exampleInputEmail1" className="form-label">Enter foreground color</label>
             <input
               type="text"
@@ -64,15 +75,25 @@ function App() {
               placeholder="white"
               onChange={(e) => { setBgColor(e.target.value) }}
             />
-            <button type="submit" className="btn btn-primary my-3">download qr-code</button>
           </form>
         </div>
+
+
         {/* Generate qr code */}
-        <div className="col-7 p-3" ref={qrRef}>
+        <div className=" col-10 col-md-6" ref={qrRef}>
           {qrCode}
         </div>
 
       </div>
+
+      <div className="container" >
+        <div className="row d-flex justify-content-center" >
+        <div className="col-2" >
+          <button type="submit" className="btn btn-primary my-5 button">download qr-code</button>
+        </div>
+        </div>
+      </div>
+
     </div>
   );
 }
