@@ -16,7 +16,7 @@ function App() {
 
     // DOWNLOAD 
     let canvas = qrRef.current.querySelector("canvas") //grabbing image
-    //console.log("canvas", canvas)
+    console.log("canvas", canvas)
     let image = canvas.toDataURL("image/png"); // converting image to png
     let anchor = document.createElement("a") // creating an a tag 
     anchor.href = image // setting the link and passing the image
@@ -89,7 +89,7 @@ function App() {
       <div className="container" >
         <div className="row d-flex justify-content-center" >
         <div className="col-2" >
-          <button type="submit" className="btn btn-primary my-5 button">download qr-code</button>
+          <button type="submit" onClick={handleDownload} className="btn btn-primary my-5 button">download qr-code</button>
         </div>
         </div>
       </div>
